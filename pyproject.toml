@@ -21,3 +21,6 @@ viu-media = { git = "https://github.com/viu-media/viu.git" }
 dev = [
     "pyinstaller>=6.17.0",
 ]
+
+[project.scripts]
+inazuma = "inazuma:main"
