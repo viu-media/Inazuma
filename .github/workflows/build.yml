@@ -1,7 +1,6 @@
 name: Build
-# on: [push, pull_request]
-  # FIXME: building apk currently does not work
-  on: []
+on: [workflow_dispatch]
+  # building apk currently does not work
 
 jobs:
   # Build job. Builds app for Android with Buildozer
