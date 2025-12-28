@@ -62,7 +62,8 @@
                                     orientation: 'vertical'
                                     adaptive_height: True
                                     spacing: SPACING_LG
-                                    padding: SPACING_MD, SPACING_MD, SPACING_MD, dp(120)
+                                    # HACK: Extra right padding to centre content due to unknown bug
+                                    padding: (SPACING_SM if root.is_mobile else SPACING_LG), SPACING_MD, SPACING_MD, dp(120)
 
                                     MDRecycleView:
                                         id: search_results_container
