@@ -110,7 +110,6 @@ jobs:
         with:
           files: |
             dist/inazuma-windows-x86_64.zip
-# FIXME: building for macOS currently does not work
   # build-macos:
   #   name: Build for macOS
   #   runs-on: macos-latest
@@ -152,3 +151,5 @@ jobs:
   #         name: inazuma-macos-universal
   #         path: dist/inazuma-macos-universal.tar.gz
   #         retention-days: 30
+
+# FIXME: building for macOS currently does not work
