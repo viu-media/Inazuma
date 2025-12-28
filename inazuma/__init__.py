@@ -274,12 +274,8 @@ class Inazuma(MDApp):
         ]
         viu_settings = self._get_viu_settings()
 
-        settings.add_json_panel(
-            "Inazuma Settings", self.config, data=json.dumps(app_settings)
-        )
-        settings.add_json_panel(
-            "Viu Settings", self.config, data=json.dumps(viu_settings)
-        )
+        settings.add_json_panel("Inazuma", self.config, data=json.dumps(app_settings))
+        settings.add_json_panel("Viu", self.config, data=json.dumps(viu_settings))
 
     def on_config_change(self, config, section, key, value):
         if section == "Preferences":
@@ -298,7 +294,17 @@ class Inazuma(MDApp):
 
         elif section == "Viu":
             self._apply_viu_config_change(key, value)
+            self._write_viu_config()
             self.viu.reset()
+
+    def _write_viu_config(self):
+        from viu_media.cli.config.generate import generate_config_toml_from_app_model
+        from viu_media.core.constants import USER_CONFIG
+        from viu_media.core.utils.file import AtomicWriter
+
+        config_toml = generate_config_toml_from_app_model(self.viu.config)
+        with AtomicWriter(USER_CONFIG, mode="w", encoding="utf-8") as f:
+            f.write(config_toml)
 
     def _apply_viu_config_change(self, key: str, value):
         """Apply a config change to viu.config dynamically."""

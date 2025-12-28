@@ -33,9 +33,7 @@ class SearchScreenModel(BaseScreenModel):
         filters = {k: v for k, v in filters.items() if v not in [None, "DISABLED"]}
 
         # Build search params with proper type conversions
-        search_params = {
-            "per_page": self.viu.config.anilist.per_page,
-        }
+        search_params = {}
 
         # Only add query if there's a search term
         if anime_title and anime_title.strip():
