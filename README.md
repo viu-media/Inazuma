@@ -1,14 +1,18 @@
 # Inazuma
+Once upon a time viu/fastanime was initially a gui.
+This is that gui with some improvements.
 
-Kivy gui wrapper over viu_media
 
 ## Installation
 While still under development you can try it out.
 
+### Using uv (recommended)
+
 ```bash
-git clone https://github.com/Benex254/Inazuma.git
-cd Inazuma
-poetry sync 
-poetry run python -m inazuma
+uv tool install git+https://github.com/Benexl/inazuma
 ```
+
+### Alternatives
+Grab and extract the release assets automatically built by github for a .exe for windows and an executable for linux
+
 
