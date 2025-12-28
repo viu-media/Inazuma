@@ -114,7 +114,7 @@
                         tooltip_text:"Add to your anime list"
                         icon: "plus-circle" if root.caller and not(root.caller.is_in_my_list) else "check-circle"
                         on_release:
-                            root.caller.is_in_my_list = not(root.caller.is_in_my_list)
+                            root.caller.toggle_in_my_list()
                             self.icon = "plus-circle" if not(root.caller.is_in_my_list) else "check-circle"
                     TooltipMDIconButton:
                         disabled:True

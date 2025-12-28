@@ -65,6 +65,11 @@ class MediaCard(HoverBehavior, MDBoxLayout):
         self.media_status = str(media_item.status.value)
         self.genres = ", ".join([genre.value for genre in media_item.genres])
         self.description = media_item.description or ""
+        self.preview_image = (
+            media_item.banner_image or media_item.cover_image.large
+            if media_item.cover_image
+            else ""
+        )
         self.cover_image_url = (
             media_item.cover_image.medium if media_item.cover_image else ""
         )
@@ -88,13 +93,15 @@ class MediaCard(HoverBehavior, MDBoxLayout):
             if media_item.next_airing
             else "N/A"
         )
-        self.is_in_my_list=bool(media_item.user_status)
-        self.first_aired_on = formatter.format_date(
-            media_item.start_date, "%B %d, %Y"
-        ) if media_item.start_date else "N/A"
+        self.is_in_my_list = bool(media_item.user_status)
+        self.first_aired_on = (
+            formatter.format_date(media_item.start_date, "%B %d, %Y")
+            if media_item.start_date
+            else "N/A"
+        )
         # Stars
         average_score = media_item.average_score or 0
-        no_of_stars = round(average_score / 100*6)
+        no_of_stars = round(average_score / 100 * 6)
         self.stars = [1 if i < no_of_stars else 0 for i in range(6)]
 
     def on_touch_down(self, touch):
@@ -166,12 +173,14 @@ class MediaCard(HoverBehavior, MDBoxLayout):
             popup.open(self)
 
     # ---------------respond to user actions and call appropriate model-------------------------
-    def on_is_in_my_list(self, instance, in_user_anime_list):
+    def toggle_in_my_list(self):
         if self.screen:
-            if in_user_anime_list:
+            if not self.is_in_my_list:
+                self.is_in_my_list = True
                 self.screen.app.add_anime_to_user_anime_list(self.anime_id)
             else:
                 self.screen.app.remove_anime_from_user_anime_list(self.anime_id)
+                self.is_in_my_list = False
 
     def on_trailer_url(self, *args):
         pass

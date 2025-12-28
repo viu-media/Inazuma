@@ -536,10 +536,37 @@ class Inazuma(MDApp):
     #
     #
     def add_anime_to_user_anime_list(self, id: int):
-        pass
+        from inazuma.utility.notification import show_notification
+        from viu_media.libs.media_api.params import UpdateUserMediaListEntryParams
+
+        if not self.viu.media_api.is_authenticated():
+            show_notification(
+                "Authentication Required",
+                "You need to be logged in to add anime to your list.",
+            )
+            self.auth_popup.open()
+            return
+        self.viu.media_api.update_list_entry(
+            UpdateUserMediaListEntryParams(media_id=id)
+        )
 
     def remove_anime_from_user_anime_list(self, id: int):
-        pass
+        
+        from inazuma.utility.notification import show_notification
+        # NOTE: for some reason anilist does not allow deleting list entries via the public API
+        show_notification(
+            "Feature Unavailable",
+            "Removing anime from your list is currently not supported due to API limitations.",
+        )
+        return
+        if not self.viu.media_api.is_authenticated():
+            show_notification(
+                "Authentication Required",
+                "You need to be logged in to remove anime from your list.",
+            )
+            self.auth_popup.open()
+            return
+        self.viu.media_api.delete_list_entry(id)
 
 
 #
