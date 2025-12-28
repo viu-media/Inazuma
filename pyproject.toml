@@ -9,6 +9,8 @@ dependencies = [
     "ffpyplayer>=4.5.3",
     "kivymd",
     "viu-media[standard]",
+    "yt-dlp-ejs>=0.3.2",
+    "yt-dlp[curl-cffi,default]>=2025.12.8",
 ]
 
 [tool.uv.sources]

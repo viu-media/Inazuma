@@ -1,3 +1,4 @@
+from threading import Thread
 from kivy.clock import Clock
 from kivy.factory import Factory
 from kivy.properties import (
@@ -11,6 +12,7 @@ from kivymd.app import MDApp
 from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from typing import TYPE_CHECKING
+from kivy.logger import Logger
 
 if TYPE_CHECKING:
     from viu_media.libs.media_api.types import MediaItem
@@ -20,7 +22,7 @@ from .components.media_popup import MediaPopup
 
 
 class MediaCard(HoverBehavior, MDBoxLayout):
-    screen = ObjectProperty()
+    app: MDApp | None = None
     anime_id = NumericProperty()
     title = StringProperty()
     is_play = ObjectProperty()
@@ -42,9 +44,10 @@ class MediaCard(HoverBehavior, MDBoxLayout):
     stars = ListProperty([0, 0, 0, 0, 0, 0])
     cover_image_url = StringProperty()
     preview_image = StringProperty()
-    has_trailer_color = ListProperty([0.5, 0.5, 0.5, 0.5])
+    has_trailer_color = ListProperty([0.5, 0.5, 0.5, 0.7])
     _popup_opened = False
     _title = ()
+    attempted_trailer_fetch = BooleanProperty(False)
 
     def __init__(self, media_item: "MediaItem | None" = None, screen=None, **kwargs):
         super().__init__(**kwargs)
@@ -103,6 +106,10 @@ class MediaCard(HoverBehavior, MDBoxLayout):
         average_score = media_item.average_score or 0
         no_of_stars = round(average_score / 100 * 6)
         self.stars = [1 if i < no_of_stars else 0 for i in range(6)]
+        if media_item.trailer:
+            self._trailer_url = (
+                f"https://www.youtube.com/watch?v={media_item.trailer.id}"
+            )
 
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
@@ -134,10 +141,12 @@ class MediaCard(HoverBehavior, MDBoxLayout):
         else:
             super().on_touch_down(touch)
 
-    # FIXME: Figure a good way implement this
-    # for now its debugy so scraping it till fix
     def on_enter(self):
+        self._fetch_trailer()
+
         def _open_popup(dt):
+            # FIXME: Figure a good way implement this
+            # for now its debugy so scraping it till fix
             if self.hovering:
                 window = self.get_parent_window()
                 if window:
@@ -147,6 +156,34 @@ class MediaCard(HoverBehavior, MDBoxLayout):
                     self.open()
 
         # Clock.schedule_once(_open_popup, 5)
+
+    def _fetch_trailer(self):
+        if not self._trailer_url or self.attempted_trailer_fetch:
+            return None
+        if self.trailer_url:
+            return self.trailer_url
+        trailer_url = self._trailer_url
+
+        def _get():
+            import yt_dlp
+
+            ydl_opts = {
+                "format": self.screen.model.viu.config.downloads.ytdlp_format,
+                "logger": Logger,
+                "remote_components": ("ejs:github", "ejs:npm"),
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info_dict = ydl.extract_info(trailer_url, download=False)
+                print(info_dict)
+                video_url = info_dict.get("url", None)
+                if video_url:
+                    Clock.schedule_once(lambda dt: self.set_trailer_url(video_url))
+                    Logger.info(f"Trailer URL fetched: {video_url}")
+                else:
+                    Logger.warning(f"Failed to fetch trailer URL for {trailer_url}")
+                self.attempted_trailer_fetch = True
+
+        Thread(target=_get, daemon=True).start()
 
     def on_popup_open(self, popup: MediaPopup):
         popup.center = self.center

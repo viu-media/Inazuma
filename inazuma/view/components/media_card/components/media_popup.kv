@@ -25,14 +25,14 @@
         MDRelativeLayout:
             size_hint_y: None
             height: dp(280)
-            line_color:root.caller.has_trailer_color if root.caller else [0,0,0]
+            line_color:root.caller.has_trailer_color if root.caller and root.caller.trailer_url else [0,0,0,0.7]
             line_width:1
-            # TODO: Remove the test source
             MediaPopupVideoPlayer:
                 id:player
-                source: root.caller.trailer_url if root.caller else 'https://www088.vipanicdn.net/streamhls/abae70787c7bd2fcd4fab986c2a5aeba/ep.7.1703900604.m3u8'
-                #thumbnail:app.default_anime_image
-                #state:"play" if root.caller.trailer_url else "stop"
+                source: root.caller.trailer_url if root.caller and root.caller.trailer_url else ""
+                # NOTE: kivy does not seem to fetch remote thumbnails
+                # thumbnail: root.caller.cover_image_url if root.caller else ""
+                # state:"play" if root.caller.trailer_url else "stop"
                 # on_state:
                     # root.caller._get_trailer()
                 # fit_mode:"fill"

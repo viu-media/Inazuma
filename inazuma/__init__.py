@@ -79,9 +79,9 @@ class Inazuma(MDApp):
         from inazuma.core.viu import Viu
         from viu_media.cli.config.loader import ConfigLoader
 
-        self.viu_config = ConfigLoader().load()
+        viu_config = ConfigLoader().load()
 
-        self.viu = Viu(self.viu_config)
+        self.viu = Viu(viu_config)
         if "MEDIA_API_TOKEN" in os.environ:
             if not self.viu.media_api.is_authenticated():
                 self.viu.media_api.authenticate(os.environ["MEDIA_API_TOKEN"])
