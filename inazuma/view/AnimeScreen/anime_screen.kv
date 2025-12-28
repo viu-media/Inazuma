@@ -18,9 +18,9 @@
 <AnimeScreenView>:
     md_bg_color: self.theme_cls.backgroundColor
     episodes_container:episodes_container
+    servers_container:servers_container
     video_player:video_player
     anime_title_label:anime_title_label
-    is_dub:is_dub
     MDBoxLayout:
         padding:"10dp"
         orientation: 'vertical'
@@ -60,50 +60,36 @@
                     MDButtonText:
                         text:"Play on external player"
                 AnimeLabel:
-                    text:"Dub: "
+                    text:"Translation: "
                     padding: "10dp"
                     adaptive_width:True
-                MDSwitch:
-                    id:is_dub
+                MDButton:
+                    style: "outlined"
+                    on_release: root.open_translation_menu(self)
+                    MDButtonText:
+                        text: root.current_translation_type
+
+                AnimeLabel:
+                    text:"Provider: "
+                    padding: "10dp"
+                    adaptive_width:True
+                MDButton:
+                    id: provider_btn
+                    style: "outlined"
+                    on_release: root.open_provider_menu(self)
+                    MDButtonText:
+                        id: provider_btn_text
+                        text: root.current_provider
             AnimeBoxLayout:
                 AnimeLabel:
-                    text:"servers: "
-                MDSegmentedButton:
-                    id:pl
-                    multiselect:False
-                    MDSegmentedButtonItem:
-                        on_active:
-                            pl.selected_segments = [self]
-                            root.update_current_video_stream("gogoanime")
-                        MDSegmentButtonLabel:
-                            text:"GoGoAnime"
-                    MDSegmentedButtonItem:
-                        id:dropbox
-                        on_active:
-                            root.update_current_video_stream("kwik")
-                            pl.selected_segments = [self]
-                        MDSegmentButtonLabel:
-                            text:"Kwik"
-                    MDSegmentedButtonItem:
-                        on_active:
-                            root.update_current_video_stream("sharepoint")
-                            pl.selected_segments = [self]
-                        MDSegmentButtonLabel:
-                            text:"Share Point"
-                    MDSegmentedButtonItem:
-                        on_active:
-                            root.update_current_video_stream("wetransfer")
-                            pl.selected_segments = [self]
-                        MDSegmentButtonLabel:
-                            text:"weTransfer"
-                    MDSegmentedButtonItem:
-                        on_active:
-                            root.update_current_video_stream("Yt")
-                            pl.selected_segments = [self]
-                        MDSegmentButtonLabel:
-                            text:"Yt"
+                    text:"Server: "
+                    padding: "10dp"
+                    adaptive_width:True
+                MDBoxLayout:
+                    id: servers_container
+                    adaptive_height: True
+                    adaptive_width: True
             MDDivider:
-
             MDRecycleView:
                 id: episodes_container
                 size_hint_y:None
