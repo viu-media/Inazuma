@@ -46,8 +46,9 @@ class MediaCard(HoverBehavior, MDBoxLayout):
     _popup_opened = False
     _title = ()
 
-    def __init__(self, media_item: "MediaItem | None"=None, screen=None, **kwargs):
+    def __init__(self, media_item: "MediaItem | None" = None, screen=None, **kwargs):
         super().__init__(**kwargs)
+        from viu_media.core.utils import formatter
 
         self.orientation = "vertical"
         self.app: MDApp | None = MDApp.get_running_app()
@@ -58,7 +59,7 @@ class MediaCard(HoverBehavior, MDBoxLayout):
         self.screen = screen
         self.anime_id = media_item.id
         self.title = media_item.title.english
-        self.episodes = str(media_item.episodes)
+        self.episodes = str(media_item.episodes) if media_item.episodes else "??"
         self.popularity = str(media_item.popularity)
         self.favourites = str(media_item.favourites)
         self.media_status = str(media_item.status.value)
@@ -68,10 +69,33 @@ class MediaCard(HoverBehavior, MDBoxLayout):
             media_item.cover_image.medium if media_item.cover_image else ""
         )
         self.studios = ", ".join(
-            [studio.name for studio in media_item.studios if studio and studio.name]
+            [
+                studio.name
+                for studio in media_item.studios
+                if studio and studio.name and studio.is_animation_studio
+            ]
+        )
+        self.producers = ", ".join(
+            [
+                studio.name
+                for studio in media_item.studios
+                if studio and studio.name and not studio.is_animation_studio
+            ]
         )
         self.tags = ", ".join([tag.name.value for tag in media_item.tags])
-
+        self.next_airing_episode = (
+            f"Episode {media_item.next_airing.episode} on {formatter.format_date(media_item.next_airing.airing_at, '%A, %d %B %Y at %X')}"
+            if media_item.next_airing
+            else "N/A"
+        )
+        self.is_in_my_list=bool(media_item.user_status)
+        self.first_aired_on = formatter.format_date(
+            media_item.start_date, "%B %d, %Y"
+        ) if media_item.start_date else "N/A"
+        # Stars
+        average_score = media_item.average_score or 0
+        no_of_stars = round(average_score / 100*6)
+        self.stars = [1 if i < no_of_stars else 0 for i in range(6)]
 
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:

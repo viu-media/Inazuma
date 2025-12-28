@@ -48,25 +48,24 @@
                     disabled: not(root.caller.stars[0]) if root.caller else False
                 MDIcon:
                     color:yellow
-                    disabled: not(root.caller.stars[0]) if root.caller else False
+                    disabled: not(root.caller.stars[1]) if root.caller else False
                     icon: "star"
                 MDIcon:
                     color:yellow
-                    disabled: not(root.caller.stars[0]) if root.caller else False
+                    disabled: not(root.caller.stars[2]) if root.caller else False
                     icon: "star"
                 MDIcon:
                     color:yellow
-                    disabled: not(root.caller.stars[0]) if root.caller else False
+                    disabled: not(root.caller.stars[3]) if root.caller else False
                     icon: "star"
                 MDIcon:
                     color:yellow
                     icon: "star"
-                    disabled: not(root.caller.stars[0]) if root.caller else False
+                    disabled: not(root.caller.stars[4]) if root.caller else False
                 MDIcon:
                     color: yellow
                     icon: "star"
-                    disabled: not(root.caller.stars[0]) if root.caller else False
-
+                    disabled: not(root.caller.stars[5]) if root.caller else False
                 MDLabel:
                     text: f"{root.caller.episodes} Episodes" if root.caller else ""
                     halign:"right"
@@ -75,7 +74,7 @@
                     bold:True
                     pos_hint: {'center_y': 0.5}
                     adaptive_height:True
-                    color: 0,0,0,.7
+                    color: 0.5,0.5,0.5,.7
             
             PopupBoxLayout:
                 padding:"5dp"

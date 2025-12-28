@@ -535,17 +535,11 @@ class Inazuma(MDApp):
     #     pass
     #
     #
-    # def add_anime_to_user_anime_list(self, id: int):
-    #     updated_list = user_data_helper.get_user_anime_list()
-    #     updated_list.append(id)
-    #     user_data_helper.update_user_anime_list(updated_list)
-    #
-    # def remove_anime_from_user_anime_list(self, id: int):
-    #     updated_list = user_data_helper.get_user_anime_list()
-    #     if updated_list.count(id):
-    #         updated_list.remove(id)
-    #     user_data_helper.update_user_anime_list(updated_list)
-    #
+    def add_anime_to_user_anime_list(self, id: int):
+        pass
+
+    def remove_anime_from_user_anime_list(self, id: int):
+        pass
 
 
 #
