@@ -230,6 +230,9 @@ class AnimeScreenView(BaseScreenView):
 
     def add_to_user_anime_list(self, *args):
         self.app.add_anime_to_user_anime_list(self.model.anime_id)
-
+    def on_pre_enter(self, *args):
+        self.current_provider = self.app.viu.config.general.provider.value
+        self.current_translation_type = self.app.viu.config.stream.translation_type
+        self.current_server_name = self.app.viu.config.stream.server.value
 
 __all__ = ["AnimeScreenView"]
