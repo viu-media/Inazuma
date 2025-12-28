@@ -172,9 +172,8 @@ class MediaCard(HoverBehavior, MDBoxLayout):
                 "logger": Logger,
                 "remote_components": ("ejs:github", "ejs:npm"),
             }
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl: # type: ignore
                 info_dict = ydl.extract_info(trailer_url, download=False)
-                print(info_dict)
                 video_url = info_dict.get("url", None)
                 if video_url:
                     Clock.schedule_once(lambda dt: self.set_trailer_url(video_url))

@@ -109,6 +109,11 @@ class Inazuma(MDApp):
 
         return self.manager_screens
 
+    def get_application_config(self, defaultpath="%(appdir)s/%(appname)s.ini"):
+        from viu_media.core.constants import APP_DATA_DIR
+
+        return str(APP_DATA_DIR / "inazuma.ini")
+
     def on_start(self, *args):
         self.media_card_popup = MediaPopup()
         self.auth_popup = AuthPopup()
@@ -551,8 +556,8 @@ class Inazuma(MDApp):
         )
 
     def remove_anime_from_user_anime_list(self, id: int):
-        
         from inazuma.utility.notification import show_notification
+
         # NOTE: for some reason anilist does not allow deleting list entries via the public API
         show_notification(
             "Feature Unavailable",
