@@ -15,52 +15,70 @@
     download_progress_label:download_progress_label
     progress_bar:progress_bar
     MDBoxLayout:
-        NavRail:
-            screen:root
-        MDAnchorLayout:
-            anchor_y: 'top'
-            MDBoxLayout:
-                orientation: 'vertical'
-                SearchBar:
-                MDScrollView:
-                    size_hint:.95,1
-                    MDBoxLayout:
-                        id:main_container
-                        orientation:"vertical"
-                        padding:"40dp"
-                        pos_hint:{"center_x":.5}
-                        spacing:"10dp"
-                        adaptive_height:True
-                        HeaderLabel:
-                            text:"Download Tasks"
-                            halign:"left"
-                            MDIcon:
-                                padding:"10dp"
-                                pos_hint:{"center_y":.5}
-                                icon:"clock"
+        orientation: 'vertical'
+        MDBoxLayout:
+            size_hint: 1, 1
+            # Desktop NavRail - hidden on mobile
+            NavRail:
+                screen: root
+                size_hint_x: None
+                width: dp(80) if not root.is_mobile else 0
+                opacity: 0 if root.is_mobile else 1
+                disabled: root.is_mobile
+            
+            MDAnchorLayout:
+                anchor_y: 'top'
+                size_hint: 1, 1
                 MDBoxLayout:
-                    size_hint_y:None
-                    height:"50dp"
-                    spacing:"16dp"
-                    padding:"16dp"
-                    md_bg_color:self.theme_cls.surfaceContainerHighestColor
-                    MDIcon:
-                        size_hint_x:None
-                        width:"24dp"
-                        icon:"progress-download"
-                        pos_hint: {'center_y': .5}
-                        theme_icon_color:"Custom"
-                        icon_color:self.theme_cls.primaryColor
+                    orientation: 'vertical'
+                    SearchBar:
+                    MDScrollView:
+                        size_hint:.95,1
+                        MDBoxLayout:
+                            id:main_container
+                            orientation:"vertical"
+                            padding:"40dp"
+                            pos_hint:{"center_x":.5}
+                            spacing:"10dp"
+                            adaptive_height:True
+                            HeaderLabel:
+                                text:"Download Tasks"
+                                halign:"left"
+                                MDIcon:
+                                    padding:"10dp"
+                                    pos_hint:{"center_y":.5}
+                                    icon:"clock"
                     MDBoxLayout:
-                        orientation:"vertical"
-                        spacing:"4dp"
-                        DownloadsScreenLabel:
-                            id:download_progress_label
-                            text:"Try Downloading something :)"
-                            theme_text_color:"Primary"
-                        MDLinearProgressIndicator:
-                            id: progress_bar
-                            size_hint_y:None
-                            height:"4dp"
-                            type: "determinate"
-                            value:0
+                        size_hint_y:None
+                        height:"50dp"
+                        spacing:"16dp"
+                        padding:"16dp"
+                        md_bg_color:self.theme_cls.surfaceContainerHighestColor
+                        MDIcon:
+                            size_hint_x:None
+                            width:"24dp"
+                            icon:"progress-download"
+                            pos_hint: {'center_y': .5}
+                            theme_icon_color:"Custom"
+                            icon_color:self.theme_cls.primaryColor
+                        MDBoxLayout:
+                            orientation:"vertical"
+                            spacing:"4dp"
+                            DownloadsScreenLabel:
+                                id:download_progress_label
+                                text:"Try Downloading something :)"
+                                theme_text_color:"Primary"
+                            MDLinearProgressIndicator:
+                                id: progress_bar
+                                size_hint_y:None
+                                height:"4dp"
+                                type: "determinate"
+                                value:0
+        
+        # Mobile BottomNav - hidden on desktop
+        BottomNav:
+            screen: root
+            size_hint_y: None
+            height: dp(80) if root.is_mobile else 0
+            opacity: 1 if root.is_mobile else 0
+            disabled: not root.is_mobile

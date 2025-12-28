@@ -1,37 +1,59 @@
+#:set SPACING_SM dp(8)
+#:set SPACING_MD dp(16)
+#:set SPACING_LG dp(24)
+#:set SPACING_XL dp(32)
+#:set CARD_WIDTH dp(140)
+#:set CARD_HEIGHT dp(250)
+#:set CARD_GAP dp(24)
+#:set NAV_WIDTH dp(80)
+#:set SIDEBAR_WIDTH dp(200)
+#:set BOTTOM_NAV_HEIGHT dp(80)
+
 <SearchScreenView>
     md_bg_color: self.theme_cls.backgroundColor
-    search_results_container:search_results_container
-    trending_anime_sidebar:trending_anime_sidebar
-    search_results_pagination:search_results_pagination
-    filters:filters
+    search_results_container: search_results_container
+    trending_anime_sidebar: trending_anime_sidebar
+    search_results_pagination: search_results_pagination
+    filters: filters
+
     MDBoxLayout:
-        size_hint:1,1
-        NavRail:
-            screen:root
-        MDAnchorLayout:
-            anchor_y: 'top'
-            padding:"10dp"
-            size_hint:1,1
+        orientation: 'vertical'
 
-            MDBoxLayout:
-                orientation: 'vertical'
-                size_hint:1,1
-                SearchBar:
+        MDBoxLayout:
+            size_hint: 1, 1
+
+            # Desktop NavRail - hidden on mobile
+            NavRail:
+                screen: root
+                size_hint_x: None
+                width: NAV_WIDTH if not root.is_mobile else 0
+                opacity: 0 if root.is_mobile else 1
+                disabled: root.is_mobile
+
+            MDAnchorLayout:
+                anchor_y: 'top'
+                padding: SPACING_MD
+                size_hint: 1, 1
+
                 MDBoxLayout:
-                    size_hint:1,1
-                    spacing:"16dp"
-                    padding:"24dp","0dp","24dp","0dp"
-                    MDBoxLayout:
-                        orientation: 'vertical'
-                        size_hint:1,1
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    spacing: SPACING_MD
 
-                        Filters:
-                            id:filters
-                            controller: root.controller
+                    SearchBar:
+
+                    MDBoxLayout:
+                        size_hint: 1, 1
+                        spacing: SPACING_LG
+
                         MDBoxLayout:
-                            orientation:'vertical'
-                            size_hint:1,1
-                            spacing:"24dp"
+                            orientation: 'vertical'
+                            size_hint: 1, 1
+
+                            Filters:
+                                id: filters
+                                controller: root.controller
+
                             MDScrollView:
                                 size_hint: 1, 1
                                 do_scroll_x: False
@@ -39,52 +61,64 @@
                                 MDBoxLayout:
                                     orientation: 'vertical'
                                     adaptive_height: True
-                                    spacing: "16dp"
-                                    padding: "16dp", "16dp", "16dp", "200dp"
+                                    spacing: SPACING_LG
+                                    padding: SPACING_MD, SPACING_MD, SPACING_MD, dp(120)
 
                                     MDRecycleView:
-                                        id:search_results_container
-                                        key_viewclass:"viewclass"
-                                        size_hint:1,None
+                                        id: search_results_container
+                                        key_viewclass: "viewclass"
+                                        size_hint: 1, None
                                         do_scroll_y: False
                                         do_scroll_x: False
                                         height: results_grid.minimum_height if results_grid.minimum_height > 0 else dp(400)
-                                        MDRecycleGridLayout:
-                                            id:results_grid
-                                            pos_hint: {'center_x': 0.5}
-                                            spacing: '24dp'
-                                            padding: "16dp"
-                                            default_size_hint:None,None
-                                            default_size:dp(140),dp(250)
-                                            cols: max(1, int((root.width - dp(400)) / dp(164)))
-                                            adaptive_height:True
-                            SearchResultsPagination:
-                                id:search_results_pagination
-                                size_hint_x:1
-                                search_view:root
-                                           
-                    MDBoxLayout:
-                        orientation:"vertical"
-                        size_hint_y:1
-                        size_hint_x:None
-                        width: dp(200)
-                        HeaderLabel:
-                            text:"Trending"
-                            halign:"center"
-                        #TrendingAnimeSideBar:
-                         #   id:trending_anime_sidebar
 
-                        MDRecycleView:
-                            id:trending_anime_sidebar
-                            key_viewclass:"viewclass"
-                            MDRecycleGridLayout:
-                                md_bg_color:self.theme_cls.surfaceContainerLowColor
-                                pos_hint: {'center_x': 0.5}
-                                spacing: '24dp'
-                                padding: "32dp","16dp","24dp","100dp"
-                                default_size_hint:None,None
-                                default_pos_hint:{"center_x":0.5,"center_y":0.5}
-                                default_size:dp(140),dp(250)
-                                cols:1
-                                size_hint_y:None
-                                height:max(self.parent.parent.height,self.minimum_height)
+                                        MDRecycleGridLayout:
+                                            id: results_grid
+                                            pos_hint: {'center_x': 0.5}
+                                            spacing: CARD_GAP
+                                            padding: SPACING_SM
+                                            default_size_hint: None, None
+                                            default_size: CARD_WIDTH, CARD_HEIGHT
+                                            cols: max(1, int((self.parent.width - SPACING_SM * 2) / (CARD_WIDTH + CARD_GAP)))
+                                            adaptive_height: True
+
+                            SearchResultsPagination:
+                                id: search_results_pagination
+                                size_hint_x: 1
+                                search_view: root
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            size_hint_y: 1
+                            size_hint_x: None
+                            width: SIDEBAR_WIDTH if not root.is_mobile else 0
+                            opacity: 0 if root.is_mobile else 1
+
+                            HeaderLabel:
+                                text: "Trending"
+                                halign: "center"
+
+                            MDRecycleView:
+                                id: trending_anime_sidebar
+                                key_viewclass: "viewclass"
+
+                                MDRecycleGridLayout:
+                                    md_bg_color: self.theme_cls.surfaceContainerLowColor
+                                    pos_hint: {'center_x': 0.5}
+                                    spacing: SPACING_SM
+                                    # HACK: Extra Right padding to centre content due to unknown bug
+                                    padding: SPACING_XL-dp(4), SPACING_MD, SPACING_MD, dp(100)
+                                    default_size_hint: None, None
+                                    default_pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    default_size: CARD_WIDTH, CARD_HEIGHT
+                                    cols: 1
+                                    size_hint_y: None
+                                    height: max(self.parent.parent.height, self.minimum_height)
+
+        # Mobile BottomNav - hidden on desktop
+        BottomNav:
+            screen: root
+            size_hint_y: None
+            height: BOTTOM_NAV_HEIGHT if root.is_mobile else 0
+            opacity: 1 if root.is_mobile else 0
+            disabled: not root.is_mobile

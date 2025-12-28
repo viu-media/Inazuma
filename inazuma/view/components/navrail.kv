@@ -5,6 +5,13 @@
         text: root.text 
 
 
+<BottomNavItem>:
+    MDNavigationItemIcon:
+        icon: root.icon
+    MDNavigationItemLabel:
+        text: root.text
+
+
 <NavRail>:
     anchor:"top"
     type: "labeled"
@@ -31,5 +38,33 @@
             root.screen.manager_screens.current = "downloads screen"
     CommonNavigationRailItem:
         icon: "cog"
-        text: "settings"
+        text: "Settings"
         on_press:app.open_settings()
+
+
+<BottomNav>:
+    md_bg_color: self.theme_cls.secondaryContainerColor
+    BottomNavItem:
+        icon: "home"
+        text: "Home"
+        on_release:
+            root.screen.manager_screens.current = "home screen"
+    BottomNavItem:
+        icon: "magnify"
+        text: "Search"
+        on_release:
+            root.screen.manager_screens.current = "search screen"
+    BottomNavItem:
+        icon: "bookmark"
+        text: "MyList"
+        on_release:
+            root.screen.manager_screens.current = "my list screen"
+    BottomNavItem:
+        icon: "download-circle"
+        text: "Downloads"
+        on_release:
+            root.screen.manager_screens.current = "downloads screen"
+    BottomNavItem:
+        icon: "cog"
+        text: "Settings"
+        on_release: app.open_settings()

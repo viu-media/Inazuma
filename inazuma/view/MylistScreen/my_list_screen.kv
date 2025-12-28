@@ -2,29 +2,44 @@
     md_bg_color: self.theme_cls.backgroundColor
     main_container:main_container
     MDBoxLayout:
-        NavRail:
-            screen:root
-        MDAnchorLayout:
-            anchor_y: 'top'
-            padding:"10dp"
-            MDBoxLayout:
-                orientation: 'vertical'
-                id:p
-                SearchBar:
-                MDScrollView:
-                    size_hint:1,1
-                    MDBoxLayout: 
-                        id:main_container
-                        padding:"50dp","5dp","50dp","150dp"
-                        spacing:"10dp"
-                        orientation: 'vertical'
-                        size_hint_y:None          
-                        height:self.minimum_height
-                MDButton:
-                    on_press: 
-                        if root.controller: root.controller.get_more_anime()
-                    MDButtonText:
-                        text:"Load More Anime"
-
-
-    
+        orientation: 'vertical'
+        MDBoxLayout:
+            size_hint: 1, 1
+            # Desktop NavRail - hidden on mobile
+            NavRail:
+                screen: root
+                size_hint_x: None
+                width: dp(80) if not root.is_mobile else 0
+                opacity: 0 if root.is_mobile else 1
+                disabled: root.is_mobile
+            
+            MDAnchorLayout:
+                anchor_y: 'top'
+                padding:"10dp"
+                size_hint: 1, 1
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    id:p
+                    SearchBar:
+                    MDScrollView:
+                        size_hint:1,1
+                        MDBoxLayout: 
+                            id:main_container
+                            padding:"50dp","5dp","50dp","150dp"
+                            spacing:"10dp"
+                            orientation: 'vertical'
+                            size_hint_y:None          
+                            height:self.minimum_height
+                    MDButton:
+                        on_press: 
+                            if root.controller: root.controller.get_more_anime()
+                        MDButtonText:
+                            text:"Load More Anime"
+        
+        # Mobile BottomNav - hidden on desktop
+        BottomNav:
+            screen: root
+            size_hint_y: None
+            height: dp(80) if root.is_mobile else 0
+            opacity: 1 if root.is_mobile else 0
+            disabled: not root.is_mobile
