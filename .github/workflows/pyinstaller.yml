@@ -1,152 +1,152 @@
 name: Build Desktop Apps
 
 on:
-    push:
-        branches: [master, main]
-    pull_request:
-        branches: [master, main]
-    workflow_dispatch:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
 
 jobs:
-    build-linux:
-        name: Build for Linux
-        runs-on: ubuntu-latest
+  build-linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Install system dependencies
-              run: |
-                  sudo apt-get update
-                  sudo apt-get install -y \
-                    python3-dev \
-                    libsdl2-dev \
-                    libsdl2-image-dev \
-                    libsdl2-mixer-dev \
-                    libsdl2-ttf-dev \
-                    libportmidi-dev \
-                    libswscale-dev \
-                    libavformat-dev \
-                    libavcodec-dev \
-                    zlib1g-dev \
-                    libgstreamer1.0-dev \
-                    gstreamer1.0-plugins-base \
-                    gstreamer1.0-plugins-good \
-                    libmtdev-dev \
-                    libcairo2-dev \
-                    pkg-config \
-                    xclip \
-                    xsel
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-dev \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+            libportmidi-dev \
+            libswscale-dev \
+            libavformat-dev \
+            libavcodec-dev \
+            zlib1g-dev \
+            libgstreamer1.0-dev \
+            gstreamer1.0-plugins-base \
+            gstreamer1.0-plugins-good \
+            libmtdev-dev \
+            libcairo2-dev \
+            pkg-config \
+            xclip \
+            xsel
 
-            - name: Set up Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-            - name: Install uv
-              uses: astral-sh/setup-uv@v5
-              with:
-                  version: "latest"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
 
-            - name: Install dependencies
-              run: |
-                  uv sync
+      - name: Install dependencies
+        run: |
+          uv sync
 
-            - name: Build with PyInstaller
-              run: |
-                  uv run pyinstaller inazuma.spec
+      - name: Build with PyInstaller
+        run: |
+          uv run pyinstaller inazuma.spec
 
-            - name: Create tarball
-              run: |
-                  cd dist
-                  tar -czf inazuma-linux-x86_64.tar.gz inazuma/
+      - name: Create tarball
+        run: |
+          cd dist
+          tar -czf inazuma-linux-x86_64.tar.gz inazuma/
 
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: inazuma-linux-x86_64
-                  path: dist/inazuma-linux-x86_64.tar.gz
-                  retention-days: 30
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: inazuma-linux-x86_64
+          path: dist/inazuma-linux-x86_64.tar.gz
+          retention-days: 30
 
-    build-windows:
-        name: Build for Windows
-        runs-on: windows-latest
+  build-windows:
+    name: Build for Windows
+    runs-on: windows-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Set up Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-            - name: Install uv
-              uses: astral-sh/setup-uv@v5
-              with:
-                  version: "latest"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
 
-            - name: Install dependencies
-              run: |
-                  uv sync
+      - name: Install dependencies
+        run: |
+          uv sync
 
-            - name: Build with PyInstaller
-              env:
-                  KIVY_GL_BACKEND: angle_sdl2
-              run: |
-                  uv run pyinstaller inazuma.spec
+      - name: Build with PyInstaller
+        env:
+          KIVY_GL_BACKEND: angle_sdl2
+        run: |
+          uv run pyinstaller inazuma.spec
 
-            - name: Create ZIP archive
-              run: |
-                  cd dist
-                  Compress-Archive -Path inazuma -DestinationPath inazuma-windows-x86_64.zip
+      - name: Create ZIP archive
+        run: |
+          cd dist
+          Compress-Archive -Path inazuma -DestinationPath inazuma-windows-x86_64.zip
 
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: inazuma-windows-x86_64
-                  path: dist/inazuma-windows-x86_64.zip
-                  retention-days: 30
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: inazuma-windows-x86_64
+          path: dist/inazuma-windows-x86_64.zip
+          retention-days: 30
 
-    build-macos:
-        name: Build for macOS
-        runs-on: macos-latest
+  build-macos:
+    name: Build for macOS
+    runs-on: macos-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Install system dependencies
-              run: |
-                  brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
+      - name: Install system dependencies
+        run: |
+          brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
 
-            - name: Set up Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-            - name: Install uv
-              uses: astral-sh/setup-uv@v5
-              with:
-                  version: "latest"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
 
-            - name: Install dependencies
-              run: |
-                  uv sync
+      - name: Install dependencies
+        run: |
+          uv sync
 
-            - name: Build with PyInstaller
-              run: |
-                  uv run pyinstaller inazuma.spec
+      - name: Build with PyInstaller
+        run: |
+          uv run pyinstaller inazuma.spec
 
-            - name: Create tarball
-              run: |
-                  cd dist
-                  tar -czf inazuma-macos-universal.tar.gz inazuma/
+      - name: Create tarball
+        run: |
+          cd dist
+          tar -czf inazuma-macos-universal.tar.gz inazuma/
 
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: inazuma-macos-universal
-                  path: dist/inazuma-macos-universal.tar.gz
-                  retention-days: 30
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: inazuma-macos-universal
+          path: dist/inazuma-macos-universal.tar.gz
+          retention-days: 30
