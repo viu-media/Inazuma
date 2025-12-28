@@ -1,11 +1,11 @@
 name: Build Desktop Apps
 
 on:
-  push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
-  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
 
 jobs:
   build-linux:
@@ -62,12 +62,13 @@ jobs:
           cd dist
           tar -czf inazuma-linux-x86_64.tar.gz inazuma/
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: inazuma-linux-x86_64
-          path: dist/inazuma-linux-x86_64.tar.gz
-          retention-days: 30
+          files: |
+            dist/inazuma-linux-x86_64.tar.gz
 
   build-windows:
     name: Build for Windows
@@ -102,12 +103,13 @@ jobs:
           cd dist
           Compress-Archive -Path inazuma -DestinationPath inazuma-windows-x86_64.zip
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: inazuma-windows-x86_64
-          path: dist/inazuma-windows-x86_64.zip
-          retention-days: 30
+          files: |
+            dist/inazuma-windows-x86_64.zip
 # FIXME: building for macOS currently does not work
   # build-macos:
   #   name: Build for macOS
