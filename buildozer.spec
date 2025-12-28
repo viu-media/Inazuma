@@ -16,13 +16,13 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,ini,json
 
 # (list) List of inclusions using pattern matching
-source.include_patterns = inazuma/**
+source.include_patterns = inazuma/**,libs/**,main.py
 
 # (list) Source files to exclude (let empty to not exclude anything)
 source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests,.github,.git,.venv,.vscode,bin,build,dist,__pycache__
+source.exclude_dirs = tests,.github,.git,.venv,.vscode,build,dist,__pycache__,.buildozer
 
 # (list) List of exclusions using pattern matching
 source.exclude_patterns = license,README.md,repomix-output.xml
@@ -36,7 +36,9 @@ version = 3.2.7
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,kivymd,pillow,requests,certifi,charset-normalizer,idna,urllib3,ffpyplayer
+# Note: lxml removed - fails to compile on Android with Python 3.11 (PyFrameObject changes)
+# Note: python-levenshtein removed - requires C compilation, thefuzz works without it (slower)
+requirements = python3,kivy,pillow,ffpyplayer,httpx,pydantic,click,rich,inquirerpy,prompt_toolkit,thefuzz,yt-dlp,pycryptodomex,plyer,certifi,anyio,sniffio,idna,h11,httpcore
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
