@@ -79,9 +79,8 @@ class Inazuma(MDApp):
         super().__init__(**kwargs)
         os.environ["VIU_APP_NAME"] = "inazuma"
         from inazuma.core.viu import Viu
-        from viu_media.core.config import AppConfig
-
-        self.viu_config = AppConfig()
+        from viu_media.cli.config.loader import ConfigLoader
+        self.viu_config = ConfigLoader().load()
 
         self.viu = Viu(self.viu_config)
         if "MEDIA_API_TOKEN" in os.environ:
