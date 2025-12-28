@@ -3882,8 +3882,8 @@ wheels = [
 
 [[package]]
 name = "viu-media"
-version = "3.3.4"
-source = { git = "https://github.com/viu-media/viu.git#12ef447eaf5606c6f8f718aab3635eae60325542" }
+version = "3.3.5"
+source = { git = "https://github.com/viu-media/viu.git#9d9fa55b699fb2f2aba6ca8ffca507e04122a10f" }
 dependencies = [
     { name = "click" },
     { name = "httpx" },
