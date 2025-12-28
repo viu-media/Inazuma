@@ -18,43 +18,56 @@
                 size_hint:1,1
                 SearchBar:
                 MDBoxLayout:
-                    spacing:"20dp"
-                    padding:"75dp","10dp","100dp","0dp"
+                    size_hint:1,1
+                    spacing:"16dp"
+                    padding:"24dp","0dp","24dp","0dp"
                     MDBoxLayout:
                         orientation: 'vertical'
                         size_hint:1,1
+
                         Filters:
                             id:filters
                             controller: root.controller
                         MDBoxLayout:
-                            spacing:"20dp"
+                            orientation:'vertical'
+                            size_hint:1,1
+                            spacing:"24dp"
                             MDScrollView:
-                                size_hint:1,1
+                                size_hint: 1, 1
+                                do_scroll_x: False
+
                                 MDBoxLayout:
                                     orientation: 'vertical'
-                                    size_hint_y:None
-                                    height:max(self.parent.parent.height,self.minimum_height)
+                                    adaptive_height: True
+                                    spacing: "16dp"
+                                    padding: "16dp", "16dp", "16dp", "200dp"
+
                                     MDRecycleView:
                                         id:search_results_container
                                         key_viewclass:"viewclass"
+                                        size_hint:1,None
+                                        do_scroll_y: False
+                                        do_scroll_x: False
+                                        height: results_grid.minimum_height if results_grid.minimum_height > 0 else dp(400)
                                         MDRecycleGridLayout:
+                                            id:results_grid
                                             pos_hint: {'center_x': 0.5}
-                                            spacing: '40dp'
-                                            padding: "25dp","50dp","75dp","200dp"
+                                            spacing: '24dp'
+                                            padding: "16dp"
                                             default_size_hint:None,None
-                                            default_size:dp(100),dp(150)
-                                            cols:3 if root.width <= 1100 else 5
-                                            size_hint_y:None
-                                            height:max(self.parent.parent.height,self.minimum_height)
-                                    SearchResultsPagination:
-                                        id:search_results_pagination
-                                        search_view:root
+                                            default_size:dp(140),dp(250)
+                                            cols: max(1, int((root.width - dp(400)) / dp(164)))
+                                            adaptive_height:True
+                            SearchResultsPagination:
+                                id:search_results_pagination
+                                size_hint_x:1
+                                search_view:root
                                            
                     MDBoxLayout:
                         orientation:"vertical"
                         size_hint_y:1
                         size_hint_x:None
-                        width: dp(250)
+                        width: dp(200)
                         HeaderLabel:
                             text:"Trending"
                             halign:"center"
@@ -67,11 +80,11 @@
                             MDRecycleGridLayout:
                                 md_bg_color:self.theme_cls.surfaceContainerLowColor
                                 pos_hint: {'center_x': 0.5}
-                                spacing: '40dp'
-                                padding: "75dp","25dp","25dp","200dp"
+                                spacing: '24dp'
+                                padding: "32dp","16dp","24dp","100dp"
                                 default_size_hint:None,None
                                 default_pos_hint:{"center_x":0.5,"center_y":0.5}
-                                default_size:dp(100),dp(150)
+                                default_size:dp(140),dp(250)
                                 cols:1
                                 size_hint_y:None
                                 height:max(self.parent.parent.height,self.minimum_height)

@@ -1,27 +1,41 @@
 <MediaCard>
     adaptive_height:True
-    spacing:"5dp"
+    spacing:"6dp"
     size_hint_x: None
-    width:dp(100)
-    height: dp(150)
-    FitImage:
-        source:root.cover_image_url
-        fit_mode:"fill"
+    width:dp(140)
+    radius: [8]
+    padding: "4dp"
+
+    # Card image container with rounded corners
+    MDBoxLayout:
         size_hint: None, None
-        width: dp(100)
-        height: dp(150)
+        width: dp(132)
+        height: dp(186)
+        radius: [6]
+        md_bg_color: self.theme_cls.surfaceContainerHighColor
+
+        FitImage:
+            source: root.cover_image_url
+            fit_mode: "cover"
+            size_hint: None, None
+            width: dp(132)
+            height: dp(186)
+            radius: [6]
     MDDivider:
-        color:root.theme_cls.primaryColor if root._trailer_url else [0.5, 0.5, 0.5, 0.5] 
-        size_hint: None, 1
-        width: dp(100)
+        color:root.theme_cls.primaryColor if root._trailer_url else self.theme_cls.outlineVariantColor
+        size_hint: None, None
+        width: dp(132)
+        height: dp(2)
     SingleLineLabel:
-        font_style:"Label"
+        font_style:"Body"
         role:"medium"
         text:root.title
         max_lines:2        
         halign:"center"
-        color:self.theme_cls.secondaryColor
+        theme_text_color: "Primary"
         size_hint_x: None
         shorten:True
-        width: dp(100)
+        width: dp(132)
+        height: self.texture_size[1] + dp(4)
+
 

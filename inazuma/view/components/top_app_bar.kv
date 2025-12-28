@@ -2,18 +2,29 @@
     pos_hint: {'center_x': 0.5,'top': 1}
     padding: "10dp"
     adaptive_height:True
-    size_hint_x:.75
+    size_hint_x:1
     spacing: '20dp'
-    MDTextField:
-        size_hint_x:1
-        required:True
-        on_text_validate:
-            app.search_for_anime(args[0])
-        MDTextFieldLeadingIcon:
-            icon: "magnify"
-        MDTextFieldHintText:
-            text: "Search for anime"
+    padding:"64dp", "24dp", "32dp", "24dp"
+    MDBoxLayout:   
+        size_hint_x:1 
+        Widget:    
+        MDTextField:
+            size_hint_x:None
+            width: 500
+            pos_hint: {'center_y': 0.5}
+            required:True
+            on_text_validate:
+                app.search_for_anime(args[0])
+            MDTextFieldLeadingIcon:
+                icon: "magnify"
+            MDTextFieldHintText:
+                text: "Search for anime"
+        Widget:
     MDIconButton:
         pos_hint: {'center_y': 0.5}
         icon: "account-circle"
+        theme_font_size: "Custom"
+        font_size: "40sp"
+        size_hint: None, None
+        size: "48dp", "48dp"
         on_release: app.auth_popup.open()
