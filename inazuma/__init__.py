@@ -27,8 +27,6 @@ if TYPE_CHECKING:
     from viu_media.libs.media_api.types import MediaItem
     from viu_media.libs.provider.anime.types import Server
 
-#!python
-
 
 class SettingScrollOptions(SettingOptions):
     def _create_popup(self, instance):
@@ -80,6 +78,7 @@ class Inazuma(MDApp):
         os.environ["VIU_APP_NAME"] = "inazuma"
         from inazuma.core.viu import Viu
         from viu_media.cli.config.loader import ConfigLoader
+
         self.viu_config = ConfigLoader().load()
 
         self.viu = Viu(self.viu_config)
