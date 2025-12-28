@@ -128,3 +128,12 @@
                 on_release: root.open_filter_menu(self, "year")
 
         Widget:
+
+        # Per Page setting
+        FilterItem:
+            FilterLabel:
+                text: "Per Page"
+            FilterDropDown:
+                id: per_page_filter
+                text: str(root.per_page)
+                on_release: root.open_filter_menu(self, "per_page")

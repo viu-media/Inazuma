@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from kivy.properties import DictProperty, ObjectProperty, StringProperty
+from kivy.properties import DictProperty, NumericProperty, ObjectProperty, StringProperty
+from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.uix.menu import MDDropdownMenu
@@ -12,6 +13,9 @@ if TYPE_CHECKING:
 
 # Generate year range dynamically from 1990 to current year + 1
 YEARS = [str(year) for year in range(datetime.now().year + 1, 1989, -1)]
+
+# Available per_page options
+PER_PAGE_OPTIONS = [10, 20, 30, 40, 50]
 
 # Human-readable labels for filter values
 FILTER_LABELS = {
@@ -79,6 +83,13 @@ class FilterChip(MDBoxLayout):
 class Filters(MDBoxLayout):
     controller: "SearchScreenController" = ObjectProperty()
     filters: dict = DictProperty(DEFAULT_FILTERS.copy())
+    per_page: int = NumericProperty(30)
+
+    def on_kv_post(self, base_widget):
+        """Initialize per_page from config after KV is loaded."""
+        app = MDApp.get_running_app()
+        if app and hasattr(app, "viu"):
+            self.per_page = app.viu.config.anilist.per_page
 
     def get_display_text(self, filter_name: str, value: str) -> str:
         """Get human-readable display text for a filter value."""
@@ -111,6 +122,17 @@ class Filters(MDBoxLayout):
             case "year":
                 items = YEARS.copy()
                 items.insert(0, "DISABLED")
+            case "per_page":
+                # Handle per_page separately with numeric values
+                menu_items = [
+                    {
+                        "text": str(val),
+                        "on_release": lambda v=val: self._set_per_page(v),
+                    }
+                    for val in PER_PAGE_OPTIONS
+                ]
+                MDDropdownMenu(caller=menu_item, items=menu_items).open()
+                return
             case _:
                 items = []
         if items:
@@ -149,6 +171,16 @@ class Filters(MDBoxLayout):
             case "year":
                 self.ids.year_filter.text = display_text
                 self.filters["year"] = filter_value
+
+    def _set_per_page(self, value: int):
+        """Set per_page in config and update UI."""
+        self.per_page = value
+        self.ids.per_page_filter.text = str(value)
+        
+        # Update the viu config
+        app = MDApp.get_running_app()
+        if app and hasattr(app, "viu"):
+            app.viu.config.anilist.per_page = value
 
     def reset_filters(self):
         """Reset all filters to default values."""
