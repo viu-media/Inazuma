@@ -1,6 +1,6 @@
 [project]
 name = "inazuma"
-version = "3.2.7"
+version = "0.1.0"
 description = "A gui wrapper over viu"
 license = "UNLICENSE"
 readme = "README.md"
