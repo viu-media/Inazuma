@@ -92,6 +92,8 @@ jobs:
                   uv sync
 
             - name: Build with PyInstaller
+              env:
+                  KIVY_GL_BACKEND: angle_sdl2
               run: |
                   uv run pyinstaller inazuma.spec
 
