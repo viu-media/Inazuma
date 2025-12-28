@@ -114,6 +114,7 @@ class AnimeScreenModel(BaseScreenModel):
                     anime_id=self.current_state.provider_anime.id,
                     episode=episode,
                     translation_type=self.viu.config.stream.translation_type,
+                    quality=self.viu.config.stream.quality,
                 )
             )
 

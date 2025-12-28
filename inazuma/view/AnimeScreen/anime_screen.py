@@ -113,7 +113,10 @@ class AnimeScreenView(BaseScreenView):
             if server.name == server_name:
                 self.current_server = server
                 self.current_server_name = server.name
-                self.current_link = server.links[0].link
+                for server_link in server.links:
+                    if server_link.quality == self.app.viu.config.stream.quality:
+                        self.current_link = server_link.link
+                        break
                 self.video_player.state = "play"
                 logger.debug(f"found {self.current_server_name} server")
                 logger.debug(f"found {self.current_link} link")
