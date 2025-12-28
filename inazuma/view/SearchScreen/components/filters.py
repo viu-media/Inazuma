@@ -5,7 +5,7 @@ from kivy.properties import DictProperty, ObjectProperty, StringProperty
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.uix.menu import MDDropdownMenu
-from viu_media.libs.media_api.types import MediaGenre, MediaSort
+from viu_media.libs.media_api.types import MediaGenre, MediaSort, MediaTag
 
 if TYPE_CHECKING:
     from inazuma.controller.search_screen import SearchScreenController
@@ -35,6 +35,7 @@ FILTER_LABELS = {
         "HIATUS": "On Hiatus",
     },
     "genre": {g: g.replace("_", " ").title() for g in MediaGenre.__members__.keys()},
+    "tag": {t: t.replace("_", " ").title() for t in MediaTag.__members__.keys()},
     "format": {
         "TV": "TV Series",
         "TV_SHORT": "TV Short",
@@ -56,6 +57,7 @@ DEFAULT_FILTERS = {
     "sort": MediaSort.SEARCH_MATCH.value,
     "status": "DISABLED",
     "genre": "DISABLED",
+    "tag": "DISABLED",
     "format": "DISABLED",
     "season": "DISABLED",
     "year": "DISABLED",
@@ -97,6 +99,9 @@ class Filters(MDBoxLayout):
             case "genre":
                 items = [f for f in MediaGenre.__members__.keys()]
                 items.insert(0, "DISABLED")
+            case "tag":
+                items = [t for t in MediaTag.__members__.keys()]
+                items.insert(0, "DISABLED")
             case "format":
                 items = list(FILTER_LABELS["format"].keys())
                 items.insert(0, "DISABLED")
@@ -132,6 +137,9 @@ class Filters(MDBoxLayout):
             case "genre":
                 self.ids.genre_filter.text = display_text
                 self.filters["genre"] = filter_value
+            case "tag":
+                self.ids.tag_filter.text = display_text
+                self.filters["tag"] = filter_value
             case "format":
                 self.ids.format_filter.text = display_text
                 self.filters["format"] = filter_value
@@ -152,6 +160,7 @@ class Filters(MDBoxLayout):
         self.ids.genre_filter.text = self.get_display_text(
             "genre", self.filters["genre"]
         )
+        self.ids.tag_filter.text = self.get_display_text("tag", self.filters["tag"])
         self.ids.format_filter.text = self.get_display_text(
             "format", self.filters["format"]
         )

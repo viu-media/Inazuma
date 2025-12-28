@@ -6,6 +6,7 @@ from viu_media.libs.media_api.types import (
     MediaGenre,
     MediaSeason,
     MediaSort,
+    MediaTag,
 )
 
 from .base_model import BaseScreenModel
@@ -56,6 +57,10 @@ class SearchScreenModel(BaseScreenModel):
         # Handle genre (as list for genre_in)
         if "genre" in filters:
             search_params["genre_in"] = [MediaGenre[filters["genre"]]]
+
+        # Handle tag (as list for tag_in)
+        if "tag" in filters:
+            search_params["tag_in"] = [MediaTag[filters["tag"]]]
 
         # Handle format (as list for format_in)
         if "format" in filters:

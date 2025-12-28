@@ -91,6 +91,15 @@
                 text: root.get_display_text("genre", root.filters["genre"])
                 on_release: root.open_filter_menu(self, "genre")
 
+        # Tag filter
+        FilterItem:
+            FilterLabel:
+                text: "Tag"
+            FilterDropDown:
+                id: tag_filter
+                text: root.get_display_text("tag", root.filters["tag"])
+                on_release: root.open_filter_menu(self, "tag")
+
         # Format filter
         FilterItem:
             FilterLabel:
