@@ -19,6 +19,7 @@
     md_bg_color: self.theme_cls.backgroundColor
     episodes_container:episodes_container
     video_player:video_player
+    anime_title_label:anime_title_label
     is_dub:is_dub
     MDBoxLayout:
         padding:"10dp"
@@ -28,6 +29,9 @@
             MDIconButton:
                 icon:"arrow-left"
                 on_press:root.manager_screens.current = root.caller_screen_name
+            AnimeLabel:
+                id:anime_title_label
+                halign:"center"
         MDBoxLayout:
             VideoPlayer:
                 id:video_player

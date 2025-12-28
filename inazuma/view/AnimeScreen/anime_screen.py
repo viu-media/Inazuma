@@ -38,6 +38,7 @@ class AnimeScreenView(BaseScreenView):
     current_episode_index = 0
     current_episode = 1
     video_player = ObjectProperty()
+    anime_title_label = ObjectProperty()
     current_server_name = "sharepoint"
     is_dub = ObjectProperty()
 
@@ -72,6 +73,7 @@ class AnimeScreenView(BaseScreenView):
             self.update_current_episode(previous_episode)
 
     def on_current_anime_data(self, instance, anime: "Anime"):
+        self.anime_title_label.text = self.current_media_item.title.english if self.current_media_item else "Loading..."
         episodes = anime.episodes.sub if True else anime.episodes.dub
         self.update_episodes(episodes)
         if self.episodes_list:
