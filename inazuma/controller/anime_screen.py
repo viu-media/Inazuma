@@ -22,12 +22,6 @@ class AnimeScreenController:
         return self.view
 
     def fetch_streams(self, episode="1"):
-        # if self.view.is_dub:
-        #     is_dub = self.view.is_dub.active
-        #     if anime_data := self.model.get_anime_data_from_provider(
-        #         anilist_Data, is_dub
-        #     ):
-        #         self.view.current_anime_data = anime_data
         if not self.model.current_state.provider_anime:
             Logger.warning("No provider anime data available to fetch streams.")
             return
