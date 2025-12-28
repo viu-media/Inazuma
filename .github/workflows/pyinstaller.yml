@@ -108,45 +108,45 @@ jobs:
           name: inazuma-windows-x86_64
           path: dist/inazuma-windows-x86_64.zip
           retention-days: 30
+# FIXME: building for macOS currently does not work
+  # build-macos:
+  #   name: Build for macOS
+  #   runs-on: macos-latest
 
-  build-macos:
-    name: Build for macOS
-    runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #     - name: Install system dependencies
+  #       run: |
+  #         brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
 
-      - name: Install system dependencies
-        run: |
-          brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.11"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+  #     - name: Install uv
+  #       uses: astral-sh/setup-uv@v5
+  #       with:
+  #         version: "latest"
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          version: "latest"
+  #     - name: Install dependencies
+  #       run: |
+  #         uv sync
 
-      - name: Install dependencies
-        run: |
-          uv sync
+  #     - name: Build with PyInstaller
+  #       run: |
+  #         uv run pyinstaller inazuma.spec
 
-      - name: Build with PyInstaller
-        run: |
-          uv run pyinstaller inazuma.spec
+  #     - name: Create tarball
+  #       run: |
+  #         cd dist
+  #         tar -czf inazuma-macos-universal.tar.gz inazuma/
 
-      - name: Create tarball
-        run: |
-          cd dist
-          tar -czf inazuma-macos-universal.tar.gz inazuma/
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: inazuma-macos-universal
-          path: dist/inazuma-macos-universal.tar.gz
-          retention-days: 30
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: inazuma-macos-universal
+  #         path: dist/inazuma-macos-universal.tar.gz
+  #         retention-days: 30
