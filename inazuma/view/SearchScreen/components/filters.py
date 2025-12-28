@@ -1,7 +1,12 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from kivy.properties import DictProperty, NumericProperty, ObjectProperty, StringProperty
+from kivy.properties import (
+    DictProperty,
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
+)
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dropdownitem import MDDropDownItem
@@ -176,7 +181,7 @@ class Filters(MDBoxLayout):
         """Set per_page in config and update UI."""
         self.per_page = value
         self.ids.per_page_filter.text = str(value)
-        
+
         # Update the viu config
         app = MDApp.get_running_app()
         if app and hasattr(app, "viu"):
