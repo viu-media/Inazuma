@@ -48,8 +48,9 @@
         MDDivider:
 
         # Content - changes based on login state
-        MDBoxLayout:
-            orientation: 'vertical'
+        MDAnchorLayout:
+            size_hint:1,1
+            anchor_y: 'top'
             spacing: "15dp"
 
             # Logged in view
@@ -130,17 +131,6 @@
                         text: "Copy the token from the URL after authorizing"
                         mode: "persistent"
 
-                MDButton:
-                    style: "filled"
-                    on_release: root.login_with_token(token_field.text)
-                    pos_hint: {'center_x': 0.5}
-                    disabled: root.is_loading or not token_field.text
-
-                    MDButtonIcon:
-                        icon: "login"
-
-                    MDButtonText:
-                        text: "Login"
 
         # Spacer
         Widget:
@@ -165,21 +155,45 @@
                 size: dp(24), dp(24)
                 pos_hint: {'center_y': 0.5}
                 opacity: 1 if root.is_loading else 0
-
-            MDButton:
-                style: "outlined"
-                theme_bg_color: "Custom"
-                md_bg_color: 1, 0.3, 0.3, 0.1
-                on_release: root.logout()
+            MDBoxLayout:
+                orientation: 'vertical'
                 opacity: 1 if root.is_logged_in else 0
-                disabled: not root.is_logged_in or root.is_loading
+                disabled: not root.is_logged_in
+                size_hint_x: None
+                width: self.minimum_width if root.is_logged_in else 0
+                
+                MDButton:
+                    style: "outlined"
+                    theme_bg_color: "Custom"
+                    md_bg_color: 1, 0.3, 0.3, 0.1
+                    on_release: root.logout()
+                    opacity: 1 if root.is_logged_in else 0
+                    disabled: not root.is_logged_in or root.is_loading
+                    MDButtonIcon:
+                        icon: "logout"
+                        theme_icon_color: "Custom"
+                        icon_color: 1, 0.4, 0.4, 1
 
-                MDButtonIcon:
-                    icon: "logout"
-                    theme_icon_color: "Custom"
-                    icon_color: 1, 0.4, 0.4, 1
+                    MDButtonText:
+                        text: "Logout"
+                        theme_text_color: "Custom"
+                        text_color: 1, 0.4, 0.4, 1
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_size: True
+                opacity: 0 if root.is_logged_in else 1
+                disabled: root.is_logged_in
+                size_hint_x: None
+                width: self.minimum_width if not root.is_logged_in else 0
 
-                MDButtonText:
-                    text: "Logout"
-                    theme_text_color: "Custom"
-                    text_color: 1, 0.4, 0.4, 1
+                MDButton:
+                    style: "tonal"
+                    on_release: root.login_with_token(token_field.text)
+                    disabled: root.is_loading or not token_field.text
+                    opacity: 0 if root.is_logged_in else 1
+                    MDButtonIcon:
+                        icon: "login"
+
+                    MDButtonText:
+
+                        text: "Login"
