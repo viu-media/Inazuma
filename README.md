@@ -33,7 +33,7 @@ This is that gui with some improvements.
 ### Using uv (recommended)
 
 ```bash
-uv tool install git+https://github.com/Benexl/inazuma
+uv tool install git+https://github.com/viu-media/inazuma
 
 # enjoy :)
 inazuma
