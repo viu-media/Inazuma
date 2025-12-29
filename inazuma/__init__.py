@@ -78,8 +78,13 @@ class Inazuma(MDApp):
         os.environ["VIU_APP_NAME"] = "inazuma"
         from inazuma.core.viu import Viu
         from viu_media.cli.config.loader import ConfigLoader
+        from viu_media.core.constants import USER_CONFIG
+        from viu_media.core.config import AppConfig
 
-        viu_config = ConfigLoader().load()
+        if USER_CONFIG.exists():
+            viu_config = ConfigLoader().load(allow_setup=False)
+        else:
+            viu_config = AppConfig()
 
         self.viu = Viu(viu_config)
         if "MEDIA_API_TOKEN" in os.environ:
