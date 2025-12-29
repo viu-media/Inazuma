@@ -418,7 +418,7 @@ wheels = [
 
 [[package]]
 name = "inazuma"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "ffpyplayer" },
@@ -4068,7 +4068,7 @@ wheels = [
 [[package]]
 name = "viu-media"
 version = "3.3.5"
-source = { git = "https://github.com/viu-media/viu.git#9d9fa55b699fb2f2aba6ca8ffca507e04122a10f" }
+source = { git = "https://github.com/viu-media/viu.git#bcc5e7df8e2cf655360f5029cbc796c1946815ee" }
 dependencies = [
     { name = "click" },
     { name = "httpx" },
